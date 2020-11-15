@@ -4,19 +4,10 @@ import axios from 'axios';
 
   
 export function App(props) {
-  const [gotData, setData] = useState([]);
-  
-  useEffect(() => {
-    axios.get('/student').then(res => {
-      setData(res.data.data[0]);
-    });
-  }, [])
-  
+ 
   const [name, setName] = useState("");
-  //need argument?
   const handleSubmit = (evt) => {
       evt.preventDefault();
-	  //axios post student data
 	  axios.post('/student', 
 	  {
                 "fullname": name,
@@ -32,25 +23,33 @@ export function App(props) {
   .catch(function (error) {
     console.log(error);
   });
-      //alert(`Submitting Name ${name}`)
   }
+
+  const [gotData, setData] = useState([]);  
+  useEffect(() => {
+	if (gotData) {  
+    axios.get('/student').then(res => {
+      setData(res.data.data[0]);
+    });
+	}
+  }, [gotData])
+   
+  
+  
   return (
     <div className="App">
       <header className="App-header">  
         <ul>
-		
 		{gotData.map(student=><li key = {student.id}>{student.fullname}</li>)}
-		
-        </ul> 
-      
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-        <input type="text" value={name} onChange={e => setName(e.target.value)} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-</header>
+        </ul>       
+		  <form onSubmit={handleSubmit}>
+			<label>
+			  Name:
+			<input type="text" value={name} onChange={e => setName(e.target.value)} />
+			</label>
+			<input type="submit" value="Submit" />
+		  </form>
+      </header>
     </div>
 	
   );
