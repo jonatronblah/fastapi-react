@@ -1,6 +1,10 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {
+  Switch,
+  Route
+} from "react-router-dom";
 
   
 export function App(props) {
@@ -38,18 +42,23 @@ export function App(props) {
   
   return (
     <div className="App">
-      <header className="App-header">  
-        <ul>
-		{gotData.map(student=><li key = {student.id}>{student.fullname}</li>)}
-        </ul>       
-		  <form onSubmit={handleSubmit}>
-			<label>
-			  Name:
-			<input type="text" value={name} onChange={e => setName(e.target.value)} />
-			</label>
-			<input type="submit" value="Submit" />
-		  </form>
-      </header>
+		<header className="App-header"> 
+			<Switch>
+			<Route path="/data">
+       
+			  <ul>
+			  {gotData.map(student=><li key = {student.id}>{student.fullname}</li>)}
+			  </ul>       
+			  <form onSubmit={handleSubmit}>
+				<label>
+				  Name:
+				<input type="text" value={name} onChange={e => setName(e.target.value)} />
+				</label>
+				<input type="submit" value="Submit" />
+			  </form>
+			</Route>
+			</Switch>		  
+		</header>
     </div>
 	
   );
