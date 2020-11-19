@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context:  ./services/web
+    command: gunicorn -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 app:app
+    volumes:
+      - ./services/web:/usr/src/app
+    expose:
+      - 5000
+    env_file:
+      - ./.env
+  client:
+    build:
+      context: ./services/client
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ./services/client/src:/usr/src/app/src
+    ports:
+      - 1337:80  
+    depends_on:
+      - web
+  db:
+    image: mongo:latest
+    volumes:
+      - db:/data
+
+volumes:
+  db:
