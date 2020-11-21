@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request
 
-from app.routes.student import router as StudentRouter
+from app.routes.message import router as MessageRouter
 
 
 app = FastAPI()
 
-app.include_router(StudentRouter, tags=["Student"], prefix="/student")
+app.include_router(MessageRouter, tags=["Message"], prefix="/message")
 
 
 

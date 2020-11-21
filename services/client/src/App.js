@@ -9,16 +9,18 @@ import {
   
 export function App(props) {
  
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  
   const handleSubmit = (evt) => {
       evt.preventDefault();
-	  axios.post('/student', 
+	  axios.post('/message', 
 	  {
-                "fullname": name,
-                "email": "jdoe@x.edu.ng",
-                "course_of_study": "Water resources engineering",
-                "year": 2,
-                "gpa": "3.0",
+                "username": username,
+                "subject": subject,
+                "body": body,
+                "datetime": Date.now(),
             }
   )
   .then(function (response) {
@@ -27,16 +29,28 @@ export function App(props) {
   .catch(function (error) {
     console.log(error);
   });
+  
+  
   }
 
   const [gotData, setData] = useState([]);  
   useEffect(() => {
-	if (gotData) {  
-    axios.get('/student').then(res => {
+  const interval = setInterval(() => {	  
+    
+	axios.get('/message').then(res => {
       setData(res.data.data[0]);
     });
-	}
-  }, [gotData])
+	}, 1000)
+	return()=>clearInterval(interval)
+	
+	
+	}, [])
+
+	
+	
+	
+	
+	
    
   
   
@@ -46,14 +60,31 @@ export function App(props) {
 			<Switch>
 			<Route path="/data">
        
-			  <ul>
-			  {gotData.map(student=><li key = {student.id}>{student.fullname}</li>)}
+			  <ul className="List">
+				  {gotData.map((message) =>
+				  <div key = {message.id}>
+					  <h3>{message.subject}</h3>
+					  <p>{message.body}</p>
+					  <p>{message.datetime}</p>
+				  </div>
+				  )}	
 			  </ul>       
 			  <form onSubmit={handleSubmit}>
 				<label>
-				  Name:
-				<input type="text" value={name} onChange={e => setName(e.target.value)} />
+				  Username:
+				<input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+				<br/>
 				</label>
+				<label>
+				  Subject:
+				<input type="text" value={subject} onChange={e => setSubject(e.target.value)} />
+				<br/>
+				</label>
+				<label>
+				  Body:
+				<input type="text" value={body} onChange={e => setBody(e.target.value)} />
+				<br/>
+				</label>			
 				<input type="submit" value="Submit" />
 			  </form>
 			</Route>
