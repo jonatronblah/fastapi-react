@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Comment, List } from 'antd';
+import { Card, List } from 'antd';
 import {
   Switch,
   Route
@@ -10,7 +10,6 @@ import {
   
 export function App(props) {
  
-  const [username, setUsername] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   
@@ -32,7 +31,6 @@ export function App(props) {
   });
   setBody("");
   setSubject("");
-  setUsername("");
   
   
   }
@@ -42,7 +40,7 @@ export function App(props) {
   const interval = setInterval(() => {	  
     
 	axios.get('/message').then(res => {
-      setData(res.data.data[0]);
+      setData(res.data.data[0].reverse());
     });
 	}, 1000)
 	return()=>clearInterval(interval)
@@ -63,21 +61,7 @@ export function App(props) {
 		<header className="App-header"> 
 			<Switch>
 			<Route path="/data">
-			  <List
-				className="List"
-				itemLayout="horizontal"
-				dataSource={gotData}
-				renderItem={item => (
-				  <li>
-					<Comment
-					  author={item.username}
-					  content={item.body}
-					  datetime={item.datetime}
-					/>
-				  </li>
-				)}
-			  />       
-			  <form onSubmit={handleSubmit}>
+			  <form className="Form" onSubmit={handleSubmit}>
 				<label>
 				  Subject:
 				<input type="text" value={subject} onChange={e => setSubject(e.target.value)} />
@@ -85,11 +69,27 @@ export function App(props) {
 				</label>
 				<label>
 				  Body:
-				<input type="text" value={body} onChange={e => setBody(e.target.value)} />
+				<textarea value={body} onChange={e => setBody(e.target.value)} />
 				<br/>
 				</label>			
 				<input type="submit" value="Submit" />
 			  </form>
+			  <List className="List"
+				itemLayout="horizontal"
+				dataSource={gotData}
+				renderItem={item => (
+				  <li>
+					<Card
+					  size="small"
+					  title={item.subject}
+					>
+					<p>{item.body}</p>
+					<p><i>{item.username}</i></p>
+					<p>{new Date(item.datetime).toLocaleString()}</p>
+					</Card>
+				  </li>
+				)}
+			  />       
 			</Route>
 			</Switch>		  
 		</header>
