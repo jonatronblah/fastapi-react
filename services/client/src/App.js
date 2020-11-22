@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Comment, List } from 'antd';
 import {
   Switch,
   Route
@@ -17,7 +18,7 @@ export function App(props) {
       evt.preventDefault();
 	  axios.post('/message', 
 	  {
-                "username": username,
+                "username": "mayor defacto",
                 "subject": subject,
                 "body": body,
                 "datetime": Date.now(),
@@ -29,6 +30,9 @@ export function App(props) {
   .catch(function (error) {
     console.log(error);
   });
+  setBody("");
+  setSubject("");
+  setUsername("");
   
   
   }
@@ -59,22 +63,21 @@ export function App(props) {
 		<header className="App-header"> 
 			<Switch>
 			<Route path="/data">
-       
-			  <ul className="List">
-				  {gotData.map((message) =>
-				  <div key = {message.id}>
-					  <h3>{message.subject}</h3>
-					  <p>{message.body}</p>
-					  <p>{message.datetime}</p>
-				  </div>
-				  )}	
-			  </ul>       
+			  <List
+				className="List"
+				itemLayout="horizontal"
+				dataSource={gotData}
+				renderItem={item => (
+				  <li>
+					<Comment
+					  author={item.username}
+					  content={item.body}
+					  datetime={item.datetime}
+					/>
+				  </li>
+				)}
+			  />       
 			  <form onSubmit={handleSubmit}>
-				<label>
-				  Username:
-				<input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-				<br/>
-				</label>
 				<label>
 				  Subject:
 				<input type="text" value={subject} onChange={e => setSubject(e.target.value)} />

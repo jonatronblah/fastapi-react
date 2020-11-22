@@ -5,6 +5,19 @@ from app.routes.message import router as MessageRouter
 
 
 app = FastAPI()
+
+app.include_router(
+MessageRouter, 
+tags=["Message"], 
+prefix="/message",
+)
+
+
+
+
+
+
+'''
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -13,7 +26,7 @@ MessageRouter,
 tags=["Message"], 
 prefix="/message",
 dependencies=[Depends(oauth2_scheme)])
-
+'''
 
 
 
