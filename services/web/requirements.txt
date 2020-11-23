@@ -3,3 +3,4 @@ uvicorn[standard]
 gunicorn
 motor
 pydantic[email]
+python-multipart
