@@ -29,6 +29,21 @@ services:
     image: mongo:latest
     volumes:
       - db:/data
-
+  celery:
+    build:
+      context:  ./services/web
+    env_file:
+      - ./.env
+    command: "celery -A worker.celery_app worker --loglevel=info"
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+  redis:
+    image: 'redis'
+    volumes:
+      - redis:/data      
 volumes:
   db:
+  redis:
