@@ -46,8 +46,8 @@ services:
       context:  ./services/web
     env_file:
       - ./.env
-    command: "celery -A worker.celery_app beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
-#    command: "celery -A worker.celery_app beat -S redbeat.RedBeatScheduler --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
+#    command: "celery -A worker.celery_app beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
+    command: "celery -A worker.celery_app beat -S redbeat.RedBeatScheduler --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
     user: nobody
     restart: always
     volumes:

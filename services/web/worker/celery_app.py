@@ -9,5 +9,11 @@ celery_app = Celery(
     backend="redis://redis:6379/0",
     broker="redis://redis:6379/0"
 )
+
+app.conf.update(
+    redbeat_redis_url = "redis://redis:6379/1"
+
+)
+
 celery_app.conf.imports = celery_app.conf.imports + ("worker.tasks",)
 
