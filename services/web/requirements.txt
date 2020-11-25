@@ -7,3 +7,5 @@ python-multipart
 celery
 redis
 celery-redbeat
+python-jose[cryptography]
+passlib[bcrypt]

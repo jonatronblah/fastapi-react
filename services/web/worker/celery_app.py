@@ -10,7 +10,7 @@ celery_app = Celery(
     broker="redis://redis:6379/0"
 )
 
-app.conf.update(
+celery_app.conf.update(
     redbeat_redis_url = "redis://redis:6379/1"
 
 )
