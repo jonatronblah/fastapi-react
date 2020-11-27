@@ -8,6 +8,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 database = client.messages
 
 messages_collection = database.get_collection("messages_collection")
+users_collection = database.get_collection("users_collection")
 
 def message_helper(message) -> dict:
     return {
@@ -16,7 +17,29 @@ def message_helper(message) -> dict:
         "subject": message["subject"],
         "datetime": message["datetime"],
         "body": message["body"],
+        "user_id": message["user_id"],
     }
+    
+def user_helper(user) -> dict:
+    return {
+        "id": str(user["_id"]),
+        "username": user["username"],
+        "password": user["password"],
+        "email": user["email"],
+    }
+
+async def add_user(user_data: dict) -> dict:
+    user = await users_collection.insert_one(user_data)
+    new_user = await users_collection.find_one({"_id": user.inserted_id})
+    return user_helper(new_user)
+
+async def delete_user(id: str):
+    user = await users_collection.find_one({"_id": ObjectId(id)})
+    if user:
+        await users_collection.delete_one({"_id": ObjectId(id)})
+        return True
+
+
     
 # Retrieve all students present in the database
 async def retrieve_messages():
@@ -58,6 +81,6 @@ async def update_message(id: str, data: dict):
 # Delete a student from the database
 async def delete_message(id: str):
     message = await messages_collection.find_one({"_id": ObjectId(id)})
-    if student:
+    if message:
         await messages_collection.delete_one({"_id": ObjectId(id)})
         return True

@@ -9,7 +9,7 @@ import {
 
   
 export function App(props) {
- 
+  // handle message form submission 
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   
@@ -30,11 +30,36 @@ export function App(props) {
     console.log(error);
   });
   setBody("");
-  setSubject("");
-  
-  
+  setSubject("");  
   }
-
+  // handle login form  
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const handleLogin = (evt) => {
+      evt.preventDefault();
+	  axios.post('/user/login', 
+	  {
+                "username": username,
+                "subject": subject,
+                "body": body,
+                "datetime": Date.now(),
+            }
+  )
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  setBody("");
+  setSubject("");  
+  }  
+  
+  
+  
+  
+  // handle message retreival on feed
   const [gotData, setData] = useState([]);  
   useEffect(() => {
   const interval = setInterval(() => {	  
@@ -60,7 +85,7 @@ export function App(props) {
     <div className="App">
 		<header className="App-header"> 
 			<Switch>
-			<Route path="/data">
+			<Route path="/feed">
 			  <form className="Form" onSubmit={handleSubmit}>
 				<label>
 				  Subject:
@@ -91,6 +116,10 @@ export function App(props) {
 				)}
 			  />       
 			</Route>
+			<Route path="/login">
+			<p>hey</p>
+			
+			</Route>			
 			</Switch>		  
 		</header>
     </div>

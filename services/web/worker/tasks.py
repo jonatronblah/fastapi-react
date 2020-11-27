@@ -1,6 +1,6 @@
 from worker.celery_app import celery_app
 
-
+'''
 @celery_app.task
 def my_task(msg):
     print(msg)
@@ -15,3 +15,4 @@ celery_app.conf.beat_schedule = {
         'args': ([msg])
     },
 }
+'''

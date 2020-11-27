@@ -1,14 +1,41 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 
 
+class UserSchema(BaseModel):
+    username: str = Field(...)
+    password: str = Field(...)
+    email: EmailStr = Field(...)
 
-class User(BaseModel):
-    username: str
-    email: Optional[str] = None
-    full_name: Optional[str] = None
-    disabled: Optional[bool] = None
+    class Config:
+        schema_extra = {
+            "example": {
+                "username": "jonatron",
+                "password": "asdfjkl;",
+                "email": "jonatron@site.net",
+            }
+        } 
+
+class LoginSchema(BaseModel):
+    username: str = Field(...)
+    password: str = Field(...)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "username": "jonatron",
+                "password": "asdfjkl;",
+            }
+        }            
     
     
-class UserInDB(User):
-    hashed_password: str
+def ResponseModel(data, message):
+    return {
+        "data": [data],
+        "code": 200,
+        "message": message,
+    }
+
+
+def ErrorResponseModel(error, code, message):
+    return {"error": error, "code": code, "message": message}
