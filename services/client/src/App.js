@@ -7,21 +7,28 @@ import {
   Route
 } from "react-router-dom";
 
-  
+
 export function App(props) {
+
   // handle message form submission 
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   
   const handleSubmit = (evt) => {
       evt.preventDefault();
+	  const token = localStorage.getItem('token');
 	  axios.post('/message', 
 	  {
                 "username": "mayor defacto",
                 "subject": subject,
                 "body": body,
                 "datetime": Date.now(),
-            }
+            },
+		{
+  headers: {
+    'authorization': `Bearer ${token}`
+			  }
+			}	
   )
   .then(function (response) {
     console.log(response);
@@ -32,39 +39,46 @@ export function App(props) {
   setBody("");
   setSubject("");  
   }
-  // handle login form  
+  
+  // handle login form and jwt  
+  const storedJwt = localStorage.getItem('token');
+  const [jwt, setJwt] = useState(storedJwt || null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   
   const handleLogin = (evt) => {
       evt.preventDefault();
-	  axios.post('/user/login', 
+	  axios.post('/token', 
 	  {
                 "username": username,
-                "subject": subject,
-                "body": body,
-                "datetime": Date.now(),
+                "password": password,
             }
   )
-  .then(function (response) {
-    console.log(response);
-  })
+  .then(res => {
+	  localStorage.setItem('token', res.data.access_token);
+      setJwt(res.data.access_token);
+    })
   .catch(function (error) {
     console.log(error);
   });
-  setBody("");
-  setSubject("");  
+  setUsername("");
+  setPassword("");  
   }  
   
   
   
   
   // handle message retreival on feed
-  const [gotData, setData] = useState([]);  
+  const [gotData, setData] = useState([]); 
+  const token = localStorage.getItem('token');  
   useEffect(() => {
   const interval = setInterval(() => {	  
     
-	axios.get('/message').then(res => {
+	axios.get('/message', {
+  headers: {
+    'authorization': `Bearer ${token}`
+			  }
+			}).then(res => {
       setData(res.data.data[0].reverse());
     });
 	}, 1000)
@@ -117,8 +131,19 @@ export function App(props) {
 			  />       
 			</Route>
 			<Route path="/login">
-			<p>hey</p>
-			
+			  <form className="LoginForm" onSubmit={handleLogin}>
+				<label>
+				  username:
+				<input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+				<br/>
+				</label>
+				<label>
+				  password:
+				<input type="text" value={password} onChange={e => setPassword(e.target.value)} />
+				<br/>
+				</label>			
+				<input type="submit" value="Submit" />
+			  </form>
 			</Route>			
 			</Switch>		  
 		</header>

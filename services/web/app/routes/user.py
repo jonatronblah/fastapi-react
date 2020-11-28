@@ -22,9 +22,9 @@ router = APIRouter()
 @router.post("/login", response_description="Login as an existing user")
 async def add_user_data(user: LoginSchema = Body(...)):
     user = jsonable_encoder(user)
-    user = await authenticate_user(user)
+    user = await authenticate_user(user["username"], user["password"])
     return ResponseModel(user, "User login successfull.")
-''' 
+
 
 @router.get("/{username}", response_description="User data retrieved")
 async def get_user_data(username):
@@ -32,7 +32,8 @@ async def get_user_data(username):
     if user:
         return ResponseModel(user, "User data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "User doesn't exist.")
-   
+'''  
+
 @router.post("/", response_description="Register a new user in the database")
 async def add_user_data(user: UserSchema = Body(...)):
     user = jsonable_encoder(user)
