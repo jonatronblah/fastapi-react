@@ -24,7 +24,7 @@ def user_helper(user) -> dict:
     return {
         "id": str(user["_id"]),
         "username": user["username"],
-        "password": user["password"],
+        "hashed_password": user["hashed_password"],
         "email": user["email"],
     }
 
@@ -38,6 +38,11 @@ async def delete_user(id: str):
     if user:
         await users_collection.delete_one({"_id": ObjectId(id)})
         return True
+        
+async def get_user(username: str):
+    user = await users_collection.find_one({"username": username})
+    if user:
+       return user_helper(user)         
 
 
     
