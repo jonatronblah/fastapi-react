@@ -7,6 +7,8 @@ import {
   Route
 } from "react-router-dom";
 
+const qs = require('query-string');
+
 
 export function App(props) {
 
@@ -26,7 +28,7 @@ export function App(props) {
             },
 		{
   headers: {
-    'authorization': `Bearer ${token}`
+    'Authorization': "Bearer " + token
 			  }
 			}	
   )
@@ -48,18 +50,27 @@ export function App(props) {
   
   const handleLogin = (evt) => {
       evt.preventDefault();
-	  axios.post('/token', 
-	  {
-                "username": username,
-                "password": password,
-            }
-  )
+const requestBody = {
+  "username": username,
+  "password": password
+}
+
+const config = {
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+}
+
+axios.post('/token', qs.stringify(requestBody), config)
   .then(res => {
 	  localStorage.setItem('token', res.data.access_token);
       setJwt(res.data.access_token);
     })
-  .catch(function (error) {
-    console.log(error);
+  .then(function (response) {
+    console.log(response);
+  })	
+  .catch(error => {
+console.log("ERRRR:: ",error.response.data);
   });
   setUsername("");
   setPassword("");  
@@ -76,12 +87,12 @@ export function App(props) {
     
 	axios.get('/message', {
   headers: {
-    'authorization': `Bearer ${token}`
+    'Authorization': "Bearer " + token
 			  }
 			}).then(res => {
       setData(res.data.data[0].reverse());
     });
-	}, 1000)
+	}, 10000)
 	return()=>clearInterval(interval)
 	
 	
