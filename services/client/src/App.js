@@ -4,13 +4,28 @@ import axios from 'axios';
 import { Card, List } from 'antd';
 import {
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 
 const qs = require('query-string');
 
+  export const fakeAuth = {
+	  signedIn: false
+	};
 
 export function App(props) {
+
+
+
+	const RequireAuth = ({ children }) => {
+	  if (!fakeAuth.signedIn) {
+		return <Redirect to={'/login'} />;
+	  }
+
+	  return children;
+	};
+
 
   // handle message form submission 
   const [subject, setSubject] = useState("");
@@ -110,7 +125,8 @@ console.log("ERRRR:: ",error.response.data);
     <div className="App">
 		<header className="App-header"> 
 			<Switch>
-			<Route path="/feed">
+			<RequireAuth>
+			<Route exact path="/feed">
 			  <form className="Form" onSubmit={handleSubmit}>
 				<label>
 				  Subject:
@@ -141,7 +157,8 @@ console.log("ERRRR:: ",error.response.data);
 				)}
 			  />       
 			</Route>
-			<Route path="/login">
+			</RequireAuth>
+			<Route exact path="/login">
 			  <form className="LoginForm" onSubmit={handleLogin}>
 				<label>
 				  username:
