@@ -4,8 +4,7 @@ import axios from 'axios';
 import { Card, List } from 'antd';
 import {
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 
 const qs = require('query-string');
@@ -45,8 +44,6 @@ export function App(props) {
   }
   
   // handle login form and jwt  
-  const storedJwt = localStorage.getItem('token');
-  const [jwt, setJwt] = useState(storedJwt || null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   
@@ -66,7 +63,6 @@ const config = {
 axios.post('/token', qs.stringify(requestBody), config)
   .then(res => {
 	  localStorage.setItem('token', res.data.access_token);
-      setJwt(res.data.access_token);
     })
   .then(function (response) {
     console.log(response);
@@ -83,8 +79,9 @@ console.log("ERRRR:: ",error.response.data);
   
   // handle message retreival on feed
   const [gotData, setData] = useState([]); 
-  const token = localStorage.getItem('token');  
+    
   useEffect(() => {
+  const token = localStorage.getItem('token');	  
   const interval = setInterval(() => {	  
     
 	axios.get('/message', {
