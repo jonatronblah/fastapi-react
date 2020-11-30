@@ -10,22 +10,9 @@ import {
 
 const qs = require('query-string');
 
-  export const fakeAuth = {
-	  signedIn: false
-	};
+
 
 export function App(props) {
-
-
-
-	const RequireAuth = ({ children }) => {
-	  if (!fakeAuth.signedIn) {
-		return <Redirect to={'/login'} />;
-	  }
-
-	  return children;
-	};
-
 
   // handle message form submission 
   const [subject, setSubject] = useState("");
@@ -125,7 +112,6 @@ console.log("ERRRR:: ",error.response.data);
     <div className="App">
 		<header className="App-header"> 
 			<Switch>
-			<RequireAuth>
 			<Route exact path="/feed">
 			  <form className="Form" onSubmit={handleSubmit}>
 				<label>
@@ -157,7 +143,6 @@ console.log("ERRRR:: ",error.response.data);
 				)}
 			  />       
 			</Route>
-			</RequireAuth>
 			<Route exact path="/login">
 			  <form className="LoginForm" onSubmit={handleLogin}>
 				<label>
