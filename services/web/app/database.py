@@ -17,7 +17,6 @@ def message_helper(message) -> dict:
         "subject": message["subject"],
         "datetime": message["datetime"],
         "body": message["body"],
-        "user_id": message["user_id"],
     }
     
 def user_helper(user) -> dict:

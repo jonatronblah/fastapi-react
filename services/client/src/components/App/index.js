@@ -2,12 +2,12 @@ import React from 'react';
 
 import './style.css';
 
-import Test from '../Test'
+import GetMessage from '../GetMessage'
 
 export function App() {
 
   return(
-    <Test />  
+    <GetMessage />  
 
 
   );  	
