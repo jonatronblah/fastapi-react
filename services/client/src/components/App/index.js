@@ -1,16 +1,15 @@
 import React from 'react';
-
+import { BrowserRouter } from "react-router-dom";
 import './style.css';
 
-import GetMessage from '../GetMessage'
-import LoggedIn from '../LoggedIn'
+import Router from '../Router'
 
 export function App() {
 
   return(
-    <GetMessage />  
-
-
+    <BrowserRouter>
+      <Router />  
+    </BrowserRouter>
   );  	
 }
 

@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from app.database import get_user
 from app.models.user import UserSchema as User
+from app.models.user import UserSchemaOut as UserOut
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -111,7 +112,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/me/", response_model=User)
+@router.get("/me/", response_model=UserOut)
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 

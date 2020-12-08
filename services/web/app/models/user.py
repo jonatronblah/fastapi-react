@@ -16,6 +16,11 @@ class UserSchema(BaseModel):
             }
         } 
 
+class UserSchemaOut(BaseModel):
+    username: str = Field(...)
+    email: EmailStr = Field(...)
+
+
 class LoginSchema(BaseModel):
     username: str = Field(...)
     password: str = Field(...)
