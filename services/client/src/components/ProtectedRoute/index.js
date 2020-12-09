@@ -3,22 +3,23 @@ import { Route, Redirect } from "react-router-dom";
 
 import './style.css';
 
-import LoggedIn from '../LoggedIn';
+import { useAuth } from '../AuthContext'
 
-export function PrivateRoute({ component: Component, ...rest }) 
+
+export function PrivateRoute({ children, ...rest }) 
 {
-  let fakeAuth = LoggedIn()
+  let auth = useAuth()
   return (
     <Route
       {...rest}
-      render={props =>
-        fakeAuth ? (
-          <Component {...props} />
+      render={({ location }) =>
+        auth.user ? (
+          children
         ) : (
           <Redirect
             to={{
-              pathname: "/msg",
-              state: { from: props.location }
+              pathname: "/alttest",
+              state: { from: location }
             }}
           />
         )

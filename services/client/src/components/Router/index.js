@@ -3,23 +3,25 @@ import { Route, Switch } from "react-router-dom";
 
 import './style.css';
 
-import ProtectedRoute from '../ProtectedRoute';
+import PrivateRoute from '../ProtectedRoute';
 import GetMessage from '../GetMessage';
 import Test from '../Test';
 import AltTest from '../AltTest';
 
-import LoggedIn from '../LoggedIn';
+import { ProvideAuth } from '../AuthContext'
 
 export function Router() {
 
   return(
+    <ProvideAuth>
     <Switch>
       <Route path="/msg" component={GetMessage} />
-      <ProtectedRoute path="/test" component={Test} />
+      <PrivateRoute path="/test">
+              <Test />
+            </PrivateRoute>
       <Route path="/alttest" component={AltTest} />
-      <Route path="/data" component={LoggedIn} />
     </Switch>  
-
+    </ProvideAuth>
 
   );  	
 }

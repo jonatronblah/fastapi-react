@@ -1,51 +1,49 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  useQuery
-} from 'react-query'
 
 import './style.css';
 
 
 
 
-export function LoggedIn() {
-  const token = localStorage.getItem('token')
+export function useProvideAuth() {
   
-
-
-  const [Log, setLog] = useState(null)
-
-  const { status, data, error, isFetching } = useQuery(
-    'loggedin',
-    async () => {
-      const { data, status } = await axios.get('/token/me', {
-        headers: {
-          'Authorization': "Bearer " + token
-              }
-            })
-          //  if (status.code == 200){
-          //    setLog(true)
-          //  } else {
-          //    setLog(null)
-          //  }       
-      
-      
-    }  
-  )
+const [user, setUser] = useState([]);
 
 
 
 
 
-  
+const token = localStorage.getItem('token');
 
-  return(
-    {Log}
+useEffect(() => {
+  const fetchData = async () => {
+    const result = await axios.get('/token/me', {
+      headers: {
+        'Authorization': "Bearer " + token
+            }
+          });
+
+    setUser(result.data);
+  };
+
+  fetchData();
+}, []);
 
 
-  ); 	
+
+
+
+
+
+
+
+return {user}
+   
+    
+
+	
 		
 }
 
-export default LoggedIn;
+export default useProvideAuth;
