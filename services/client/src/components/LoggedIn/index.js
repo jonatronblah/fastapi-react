@@ -11,9 +11,10 @@ import './style.css';
 
 export function LoggedIn() {
   const token = localStorage.getItem('token')
+  
 
 
-  const [value, setValue] = useState('')
+  const [Log, setLog] = useState(false)
 
   const { status, data, error, isFetching } = useQuery(
     'loggedin',
@@ -23,12 +24,11 @@ export function LoggedIn() {
           'Authorization': "Bearer " + token
               }
             })
-      //if (status.code == )      
-      return status
+    return status        
+      
+      
     }  
-
   )
-
 
 
 
@@ -36,7 +36,7 @@ export function LoggedIn() {
   
 
   return(
-      <p>{JSON.stringify(data)}</p>
+    <p>{JSON.stringify(data)}</p>
 
 
   ); 	
