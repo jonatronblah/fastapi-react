@@ -15,7 +15,9 @@ export function PrivateRoute({ children, ...rest })
       render={({ location }) =>
         auth.user ? (
           children
-        ) : (
+        ) : auth.loading ? (
+          <div>LOADING...</div>
+      ) : (
           <Redirect
             to={{
               pathname: "/alttest",

@@ -8,8 +8,8 @@ import './style.css';
 
 export function useProvideAuth() {
   
-const [user, setUser] = useState([]);
-
+const [user, setUser] = useState(false);
+const [loading, setLoading] = useState(true)
 
 
 
@@ -24,21 +24,26 @@ useEffect(() => {
             }
           });
 
-    setUser(result.data);
+    setUser(true);
+    setLoading(false);
   };
 
   fetchData();
-}, []);
+}, [setUser]);
 
 
 
 
 
+  
 
 
 
 
-return {user}
+return {
+  user,
+  loading
+}
    
     
 

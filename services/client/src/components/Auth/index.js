@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, createContext, useState } from "react";
 import axios from 'axios';
 
 import './style.css';
@@ -20,9 +20,6 @@ export function Authorize() {
       .then(res => {
           localStorage.setItem('token', res.data.access_token)
         })
-      .then(function (response) {
-        console.log(response)
-      })	
       .catch(error => {
       console.log("ERRRR:: ",error.response.data)
       })
