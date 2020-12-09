@@ -12,7 +12,7 @@ export function PrivateRoute({ component: Component, ...rest })
     <Route
       {...rest}
       render={props =>
-        (fakeAuth.code == 200) ? (
+        fakeAuth ? (
           <Component {...props} />
         ) : (
           <Redirect

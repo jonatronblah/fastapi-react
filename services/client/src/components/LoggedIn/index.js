@@ -14,7 +14,7 @@ export function LoggedIn() {
   
 
 
-  const [Log, setLog] = useState(false)
+  const [Log, setLog] = useState(null)
 
   const { status, data, error, isFetching } = useQuery(
     'loggedin',
@@ -24,7 +24,11 @@ export function LoggedIn() {
           'Authorization': "Bearer " + token
               }
             })
-    return status        
+          //  if (status.code == 200){
+          //    setLog(true)
+          //  } else {
+          //    setLog(null)
+          //  }       
       
       
     }  
@@ -33,10 +37,11 @@ export function LoggedIn() {
 
 
 
+
   
 
   return(
-    <p>{JSON.stringify(data)}</p>
+    {Log}
 
 
   ); 	
