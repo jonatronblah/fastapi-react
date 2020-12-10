@@ -16,6 +16,20 @@ const [loading, setLoading] = useState(true)
 
 const token = localStorage.getItem('token');
 
+
+useEffect(() => {
+  axios.get('/token/me', {
+    headers: {
+      'Authorization': "Bearer " + token
+          }
+        }).then(res => {(res.status === 200) ? setUser(true): setUser(false)})
+        .catch(error => {setLoading(false)});
+
+
+
+}, [setUser]);
+
+/*
 useEffect(() => {
   const fetchData = async () => {
     const result = await axios.get('/token/me', {
@@ -23,14 +37,18 @@ useEffect(() => {
         'Authorization': "Bearer " + token
             }
           });
-
-    setUser(true);
-    setLoading(false);
+    if (result.status === 200){
+      setUser(true);
+    } 
+    setLoading(false);  
+    
+    
+    
   };
 
   fetchData();
 }, [setUser]);
-
+*/
 
 
 
