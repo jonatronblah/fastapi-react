@@ -8,6 +8,7 @@ import Test from '../Test';
 import AltTest from '../AltTest';
 import SignIn from '../SignIn';
 import SignOut from '../SignOut';
+import Register from '../Register'
 
 import { ProvideAuth } from '../AuthContext';
 
@@ -17,6 +18,11 @@ const routes = [
     exact: true,
     sidebar: () => <div>home!</div>,
     main: () => <h2>Home</h2>
+  },
+  {
+    path: "/register",
+    sidebar: () => <div>register!</div>,
+    main: () => <Register />
   },
   {
     path: "/login",
@@ -65,6 +71,9 @@ export function Router() {
       <ul style={{ listStyleType: "none", padding: 0 }}>
         <li>
           <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/register">Register</Link>
         </li>
         <li>
           <Link to="/login">Sign In</Link>

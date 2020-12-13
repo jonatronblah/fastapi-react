@@ -1,5 +1,10 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 MONGO_DETAILS = "mongodb://db:27017"
 
@@ -9,6 +14,7 @@ database = client.messages
 
 messages_collection = database.get_collection("messages_collection")
 users_collection = database.get_collection("users_collection")
+
 
 def message_helper(message) -> dict:
     return {
@@ -23,7 +29,7 @@ def user_helper(user) -> dict:
     return {
         "id": str(user["_id"]),
         "username": user["username"],
-        "hashed_password": user["hashed_password"],
+        "hashed_password": get_password_hash(user["hashed_password"]),
         "email": user["email"],
     }
 
