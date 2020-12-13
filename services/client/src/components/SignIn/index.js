@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import './style.css';
 
 const qs = require('query-string');
 
 export function SignIn() {
+  const history = useHistory()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   
   
-/*
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const requestBody = {
@@ -29,17 +30,18 @@ export function SignIn() {
   axios.post('/token', qs.stringify(requestBody), config)
       .then(res => {
         localStorage.setItem('token', res.data.access_token)
-      }).then(res => {setSubmitted(true)});
+      }).then(res => {setSubmitted(true)})
+      .then(res => {history.go(0)});
           
   setUsername("");
   setPassword("");
   
   
       }
-*/
+
       if (submitted) {
         return <Redirect push to={{
-          pathname: '/test'
+          pathname: '/'
         }}
         />
       } 
