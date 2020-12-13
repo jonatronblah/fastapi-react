@@ -9,6 +9,7 @@ import AltTest from '../AltTest';
 import SignIn from '../SignIn';
 import SignOut from '../SignOut';
 import Register from '../Register'
+import Feed from '../Feed'
 
 import { ProvideAuth } from '../AuthContext';
 
@@ -44,6 +45,12 @@ const proutes = [
     main: () => <Test />
   },
   {
+    path: "/feed",
+    exact: true,
+    sidebar: () => <div>feed!</div>,
+    main: () => <Feed />
+  },
+  {
     path: "/logout",
     exact: true,
     sidebar: () => <div>sign out!</div>,
@@ -71,6 +78,9 @@ export function Router() {
       <ul style={{ listStyleType: "none", padding: 0 }}>
         <li>
           <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/feed">Feed</Link>
         </li>
         <li>
           <Link to="/register">Register</Link>
