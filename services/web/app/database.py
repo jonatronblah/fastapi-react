@@ -29,11 +29,12 @@ def user_helper(user) -> dict:
     return {
         "id": str(user["_id"]),
         "username": user["username"],
-        "hashed_password": get_password_hash(user["hashed_password"]),
+        "hashed_password": user["hashed_password"],
         "email": user["email"],
     }
 
 async def add_user(user_data: dict) -> dict:
+    user_data["hashed_password"] = get_password_hash(user_data["hashed_password"])
     user = await users_collection.insert_one(user_data)
     new_user = await users_collection.find_one({"_id": user.inserted_id})
     return user_helper(new_user)

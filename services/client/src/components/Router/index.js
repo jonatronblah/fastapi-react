@@ -4,8 +4,6 @@ import { Route, Switch, Link } from "react-router-dom";
 import './style.css';
 
 import PrivateRoute from '../ProtectedRoute';
-import Test from '../Test';
-import AltTest from '../AltTest';
 import SignIn from '../SignIn';
 import SignOut from '../SignOut';
 import Register from '../Register'
@@ -29,21 +27,10 @@ const routes = [
     path: "/login",
     sidebar: () => <div>sign in!</div>,
     main: () => <SignIn />
-  },
-  {
-    path: "/alttest",
-    sidebar: () => <div>alttest!</div>,
-    main: () => <AltTest />
   }
 ];
 
 const proutes = [
-  {
-    path: "/test",
-    exact: true,
-    sidebar: () => <div>test!</div>,
-    main: () => <Test />
-  },
   {
     path: "/feed",
     exact: true,
@@ -91,23 +78,10 @@ export function Router() {
         <li>
           <Link to="/logout">Sign Out</Link>
         </li>
-        <li>
-          <Link to="/alttest">AltTest</Link>
-        </li>
-        <li>
-          <Link to="/test">Test</Link>
-        </li>
       </ul>
       
       <Switch>
         {routes.map((route, index) => (
-          // You can render a <Route> in as many places
-          // as you want in your app. It will render along
-          // with any other <Route>s that also match the URL.
-          // So, a sidebar or breadcrumbs or anything else
-          // that requires you to render multiple things
-          // in multiple places at the same URL is nothing
-          // more than multiple <Route>s.
           <Route
             key={index}
             path={route.path}
@@ -116,13 +90,6 @@ export function Router() {
           />
         ))}
         {proutes.map((route, index) => (
-          // You can render a <Route> in as many places
-          // as you want in your app. It will render along
-          // with any other <Route>s that also match the URL.
-          // So, a sidebar or breadcrumbs or anything else
-          // that requires you to render multiple things
-          // in multiple places at the same URL is nothing
-          // more than multiple <Route>s.
           <PrivateRoute
             key={index}
             path={route.path}
@@ -138,8 +105,6 @@ export function Router() {
     <div style={{ flex: 1, padding: "10px" }}>
       <Switch>
         {routes.map((route, index) => (
-          // Render more <Route>s with the same paths as
-          // above, but different components this time.
           <Route
             key={index}
             path={route.path}
@@ -148,8 +113,6 @@ export function Router() {
           />
         ))}
         {proutes.map((route, index) => (
-          // Render more <Route>s with the same paths as
-          // above, but different components this time.
           <PrivateRoute
             key={index}
             path={route.path}

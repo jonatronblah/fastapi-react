@@ -11,7 +11,7 @@ celery_app = Celery(
 )
 
 celery_app.conf.update(
-    redbeat_redis_url = "redis://redis:6379/1"
+    redbeat_redis_url = "redis://redis:6379/0"
 
 )
 
