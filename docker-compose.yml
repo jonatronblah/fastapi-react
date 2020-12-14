@@ -8,18 +8,21 @@ services:
     depends_on:
       - web
       - client
+    volumes:
+      - static_volume:/usr/src/app/app/static    
   web:
     build:
       context:  ./services/web
     command: gunicorn -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 app:app
     volumes:
       - ./services/web:/usr/src/app
+      - static_volume:/usr/src/app/app/static
     expose:
       - 5000
     env_file:
       - ./.env
     depends_on:
-      - redis
+      - redis      
   client:
     build:
       context: ./services/client
@@ -63,3 +66,4 @@ services:
 volumes:
   db:
   redis:
+  static_volume:
