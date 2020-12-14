@@ -25,6 +25,35 @@ services:
     image: mongo:latest
     volumes:
       - db:/data
+  celery:
+    build:
+      context:  ./services/web
+    env_file:
+      - ./.env
+    command: "celery -A worker.celery_app worker --loglevel=info"
+    user: nobody
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+  celery-beat:
+    build:
+      context:  ./services/web
+    env_file:
+      - ./.env
+    command: "celery -A worker.celery_app beat -S redbeat.RedBeatScheduler --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
+    user: nobody
+    restart: always
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+  redis:
+    image: 'redis'
+    volumes:
+      - redis:/data  
 
 volumes:
   db:
+  redis:
