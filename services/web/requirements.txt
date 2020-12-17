@@ -1,7 +1,7 @@
 fastapi
 uvicorn[standard]
 gunicorn
-motor
+sqlalchemy
 pydantic[email]
 python-multipart
 celery

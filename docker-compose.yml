@@ -31,14 +31,14 @@ services:
     expose:
       - 3000    
   db:
-    image: mongo:latest
+    image: postgres:12-alpine
+    env_file:
+      - ./.env.db
     volumes:
-      - db:/data
+      - postgres_data:/var/lib/postgresql/data/
   celery:
     build:
       context:  ./services/web
-    env_file:
-      - ./.env
     command: "celery -A worker.celery_app worker --loglevel=info"
     user: nobody
     restart: always
@@ -49,9 +49,6 @@ services:
   celery-beat:
     build:
       context:  ./services/web
-    env_file:
-      - ./.env
-#    command: "celery -A worker.celery_app beat --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
     command: "celery -A worker.celery_app beat -S redbeat.RedBeatScheduler --loglevel=info --pidfile /tmp/celerybeat.pid -s /tmp/celerybeat-schedule"
     user: nobody
     restart: always

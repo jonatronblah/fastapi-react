@@ -14,6 +14,7 @@ from ..models.user import (
     ErrorResponseModel,
     ResponseModel,
     UserSchema,
+    UserSchemaOut
     LoginSchema,
 )
 
