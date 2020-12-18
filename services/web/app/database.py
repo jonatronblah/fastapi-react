@@ -2,7 +2,6 @@ import databases
 import sqlalchemy
 import os
 
-from bson.objectid import ObjectId
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -26,8 +25,7 @@ users = sqlalchemy.Table(
 
 
 engine = sqlalchemy.create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+    DATABASE_URL)
 metadata.create_all(engine)
 
 
@@ -35,10 +33,10 @@ metadata.create_all(engine)
 
 async def add_user(user_data: dict) -> dict:
     user_data["hashed_password"] = get_password_hash(user_data["hashed_password"])
-    query = users.insert().values(username=user_data.username, hashed_password=user_data.hashed_password, email=user_data.email)
+    query = users.insert().values(username=user_data["username"], hashed_password=user_data["hashed_password"], email=user_data["email"])
     last_record_id = await database.execute(query)
     
-    return {**user_data.dict(), "id": last_record_id}
+    return {**user_data, "id": last_record_id}
 
 async def delete_user(id: str):
     user = await users_collection.find_one({"_id": ObjectId(id)})
