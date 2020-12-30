@@ -39,11 +39,20 @@ async def add_user(user_data: dict) -> dict:
     return {**user_data, "id": last_record_id}
 
 async def delete_user(id: str):
-    user = await users_collection.find_one({"_id": ObjectId(id)})
+    query = users.delete().where(users.c.id == int(id))
+    await database.execute(query=query)
+    return True
+
+
+'''
+async def delete_user(id: str):
+    query = f"SELECT * FROM USERS WHERE id = {id}"
+    user = await database.fetch_all(query=query)
     if user:
-        await users_collection.delete_one({"_id": ObjectId(id)})
+        query = 
+        await database.execute(query=query)
         return True
-        
+'''       
 async def get_user(username: str):
     user = await users_collection.find_one({"username": username})
     if user:
